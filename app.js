@@ -31,7 +31,6 @@ Enemy.prototype.render = function() {
 var Player = function(x,y) {
     this.x = x;
     this.y = y;
-
     this.sprite = 'images/char-boy.png';
 };
 
@@ -61,7 +60,21 @@ Player.prototype.handleInput = function(direction){
  if(direction === 'down'){
  this.y += 82.5;
  }
- };
+     if (this.x < 0) {
+        this.x = 0;
+
+    } else if (this.x > 400) {
+        this.x = 400;
+
+    }
+    if (this.y < 0) {
+        this.y = 0;
+
+    } else if (this.y > 400) {
+        this.y = 400;
+
+    }
+};
 
 
 // Now instantiate your objects.
@@ -82,14 +95,3 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-
-
-
-
-
-
-
-
-
-
