@@ -67,13 +67,20 @@ Player.prototype.handleInput = function(direction){
         this.x = 400;
 
     }
-    if (this.y < 0) {
-        this.y = 0;
+    else if (this.y < 0) {
+    this.reset();
+
 
     } else if (this.y > 400) {
         this.y = 400;
 
     }
+};
+
+// reset function sets the player back to the starting point
+Player.prototype.reset = function() {
+  this.x = 200;
+  this.y = 400;
 };
 
 
