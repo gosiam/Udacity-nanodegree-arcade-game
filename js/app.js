@@ -1,7 +1,14 @@
+'use strict';
+
+//_____________________E N E M Y ____________________
+
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -14,21 +21,112 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x += (this.speed * 3) * dt;
+    // Reset when enemy reaches end of canvas
+  if (this.x > 505) {
+    this.reset();
+  }
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+// Reset the enemy back to start of canvas
+Enemy.prototype.reset = function() {
+  this.x = -200;
+};
+
+//____________________P L A Y E R ___________________
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+var Player = function(x,y) {
+    this.x = x;
+    this.y = y;
+    this.sprite = 'images/char-boy.png';
+};
+
+Player.prototype.update = function(dt){
+  this.x * (dt);
+  this.y * (dt);
+    // function not needed right now
+}
+
+// Draw the player on the screen, required method for game
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
+};
+
+Player.prototype.handleInput = function(direction){
+
+  if(direction === 'left'){
+ this.x -= 100;
+ }
+ if(direction === 'up'){
+ this.y -= 82.5;
+ }
+ if(direction === 'right'){
+ this.x += 100;
+ }
+ if(direction === 'down'){
+ this.y += 82.5;
+ }
+     if (this.x < 0) {
+        this.x = 0;
+
+    } else if (this.x > 400) {
+        this.x = 400;
+
+    }
+    else if (this.y < 0) {
+    this.reset();
+
+
+    } else if (this.y > 400) {
+        this.y = 400;
+
+    }
+};
+
+
+//Player-Enemy Collision Function
+Player.prototype.checkCollisions = function(){
+  for (var i = 0; i < allEnemies.length; i++){
+     if (Math.abs(player.x - allEnemies[i].x) < 60 && Math.abs(player.y - allEnemies[i].y) < 60){
+       this.positionReset();
+     }
+  }
+};
+
+
+// reset function sets the player back to the starting point
+Player.prototype.reset = function() {
+  this.x = 200;
+  this.y = 400;
+};
 
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+
+var allEnemies = [];
+
+// push enemies into allEnemies array, 4 enemies total
+// sets Y coordinate for each enemy to 0, 145, and 225 by using incrementer
+// sets X coordinate randomly
+// sets speed to a base of 50 and then randomizes each enemy
+for (var i = 0; i < 3; i++) {
+  var enemyY = 65 + 80 * i;
+  var enemyX = Math.floor(Math.random() * 30);
+  var enemySpeed = 50 + Math.floor(Math.random() * 150);
+  allEnemies.push(new Enemy(enemyX, enemyY, enemySpeed));
+}
+
+
+var player = new Player(200,400);
 
 
 
