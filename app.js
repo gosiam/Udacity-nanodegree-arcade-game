@@ -1,8 +1,11 @@
+'use strict';
+
+//_____________________E N E M Y ____________________
+
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    'use strict';
     this.x = x;
     this.y = y;
     this.speed = speed;
@@ -18,8 +21,8 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed * dt;
-    // when enemy bug reaches end of canvas call reset()
+    this.x += (this.speed * 3) * dt;
+    // Reset when enemy reaches end of canvas
   if (this.x > 505) {
     this.reset();
   }
@@ -29,10 +32,12 @@ Enemy.prototype.update = function(dt) {
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-// resets the enemy bug back to start of canvas
+// Reset the enemy back to start of canvas
 Enemy.prototype.reset = function() {
   this.x = -200;
 };
+
+//____________________P L A Y E R ___________________
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -85,6 +90,17 @@ Player.prototype.handleInput = function(direction){
 
     }
 };
+
+
+//Player-Enemy Collision Function
+Player.prototype.checkCollisions = function(){
+  for (var i = 0; i < allEnemies.length; i++){
+     if (Math.abs(player.x - allEnemies[i].x) < 60 && Math.abs(player.y - allEnemies[i].y) < 60){
+       this.positionReset();
+     }
+  }
+};
+
 
 // reset function sets the player back to the starting point
 Player.prototype.reset = function() {
