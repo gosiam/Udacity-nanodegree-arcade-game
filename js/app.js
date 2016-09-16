@@ -108,7 +108,7 @@ Player.prototype.handleInput = function(direction) {
 //Player-Enemy Collision Function
 Player.prototype.checkCollisions = function(){
   for (var i = 0; i < allEnemies.length; i++){
-     if (Math.abs(player.x - allEnemies[i].x) < 60 && Math.abs(player.y - allEnemies[i].y) < 60){
+     if (Math.abs(this.x - allEnemies[i].x) < 60 && Math.abs(this.y - allEnemies[i].y) < 60){
        this.reset();
      }
   }
