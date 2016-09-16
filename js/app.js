@@ -46,12 +46,19 @@ var Player = function(x,y) {
     this.x = x;
     this.y = y;
     this.sprite = 'images/char-boy.png';
+    this.step = 0;
 };
 
 Player.prototype.update = function(dt){
-  this.x * (dt);
-  this.y * (dt);
-    // function not needed right now
+
+    this.checkCollisions();
+
+    if (this.isWin) {
+      //update win state
+      this.step += dt * 20;
+      this.y = (Math.sin(this.step) * 3) -3;
+      this.shouldRestOnInput = this.step >50;
+    }
 }
 
 // Draw the player on the screen, required method for game
@@ -60,18 +67,18 @@ Player.prototype.render = function() {
 
 };
 
-Player.prototype.handleInput = function(direction){
+Player.prototype.handleInput = function (direction){
 
-  if(direction === 'left'){
+  if (direction === 'left'){
  this.x -= 100;
  }
- if(direction === 'up'){
+ if (direction === 'up'){
  this.y -= 82.5;
  }
- if(direction === 'right'){
+ if (direction === 'right'){
  this.x += 100;
  }
- if(direction === 'down'){
+ if (direction === 'down'){
  this.y += 82.5;
  }
      if (this.x < 0) {
@@ -82,7 +89,8 @@ Player.prototype.handleInput = function(direction){
 
     }
     else if (this.y < 0) {
-    this.reset();
+      this.y = 0;
+      this.isWin() = true;
 
 
     } else if (this.y > 400) {
@@ -96,7 +104,7 @@ Player.prototype.handleInput = function(direction){
 Player.prototype.checkCollisions = function(){
   for (var i = 0; i < allEnemies.length; i++){
      if (Math.abs(player.x - allEnemies[i].x) < 60 && Math.abs(player.y - allEnemies[i].y) < 60){
-       this.positionReset();
+       this.reset();
      }
   }
 };
@@ -106,6 +114,9 @@ Player.prototype.checkCollisions = function(){
 Player.prototype.reset = function() {
   this.x = 200;
   this.y = 400;
+  this.isWin = false;
+  this.step = 0;
+  this.shouldRest = false;
 };
 
 
@@ -126,7 +137,7 @@ for (var i = 0; i < 3; i++) {
 }
 
 
-var player = new Player(200,400);
+var player = new Player(200, 400);
 
 
 
